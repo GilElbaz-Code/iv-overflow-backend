@@ -8,7 +8,15 @@ class Config:
 
     # Flask Configuration
     DEBUG = True
-    SECRET_KEY = os.environ.get('SECRET_KEY', 'n-Fj0UziJrXl_lnYIQsmd8riaC8W6ToNxM1iNU-UkTA')
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'TestSecretKeyForDevelopment')
 
     # JWT Configuration
-    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'N9bHtf2Y1IUmqkzGO0IGNNwFvpP2hi5eoLTbbSpx8Dc')
+    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'TestJwtSecretKeyForDevelopment')
+    JWT_ALGORITHM = 'HS512'
+
+    # Other Configurations (if needed)
+    KEY_LENGTH = int(os.getenv(key="KEY_LENGTH", default=32))
+
+    @staticmethod
+    def init_app(app):
+        pass

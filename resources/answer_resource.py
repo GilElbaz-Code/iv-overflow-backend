@@ -1,6 +1,7 @@
 import uuid
 
 from flask import request
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from db import IVOverflowDB
 from models.answer_model import AnswerModel
@@ -12,6 +13,7 @@ class AnswerResource(Resource):
     def __init__(self):
         self.db = IVOverflowDB.get_db()
 
+    @jwt_required()
     def get(self):
         try:
             question_id = request.args.get('question_id')
@@ -24,6 +26,7 @@ class AnswerResource(Resource):
             error_message = str(e)
             return {'error': error_message}, 500
 
+    @jwt_required()
     def post(self):
         try:
             data = request.json

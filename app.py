@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
+from flask_jwt_extended import JWTManager
+
 
 from config import Config
 from resources.answer_resource import AnswerResource
@@ -8,9 +10,10 @@ from resources.auth_resource import AuthResource
 from resources.question_resource import QuestionResource
 
 app = Flask(__name__)
+
 CORS(app)
 api = Api(app)
-
+jwt = JWTManager(app)
 app.config.from_object(Config)
 
 api.add_resource(AuthResource, '/login')

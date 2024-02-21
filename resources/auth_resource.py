@@ -1,34 +1,33 @@
 import hashlib
-import os
-import random
-import string
-from datetime import datetime, timedelta
+from datetime import timedelta
 
-import jwt
-from flask import request
+from flask_jwt_extended import create_access_token
+from flask import current_app, request
 from flask_restful import Resource
+
 from db import IVOverflowDB
 
 
 class AuthResource(Resource):
     COLLECTION_NAME = 'users'
-    KEY_LENGTH = int(os.getenv(key="KEY_LENGTH", default=32))
 
     def __init__(self):
         self.db = IVOverflowDB.get_db()
+        self.key_length = current_app.config.get('KEY_LENGTH', 32)
 
     def post(self):
         try:
             data = request.json
-            email = data.get('email')
-            password = data.get('password')
+            email, password = data.get('email'), data.get('password')
 
             if email and password:
                 user = self.db.get_document(collection_name=self.COLLECTION_NAME,
                                             field_name="email",
                                             field_value=email)
                 if user and self._verify_password(plain_password=password, hashed_password=user['password']):
-                    token = self._generate_jwt_token(user_id=user.get('user_id'))
+                    expires_delta = timedelta(hours=1)
+                    user_id = user.get('user_id')
+                    token = create_access_token(identity=user_id, expires_delta=expires_delta)
                     return {'data': {'token': token}}, 201
                 else:
                     return {'data': {'error': 'Invalid email or password'}}, 401
@@ -43,13 +42,3 @@ class AuthResource(Resource):
     def _verify_password(plain_password: str, hashed_password: str) -> bool:
         hashed_input = hashlib.sha512(plain_password.encode('utf-8')).hexdigest()
         return hashed_input == hashed_password
-
-    def _generate_jwt_token(self, user_id: str) -> str:
-        expiration_time = datetime.utcnow() + timedelta(hours=1)
-        payload = {'user_id': user_id, 'exp': expiration_time}
-        token = jwt.encode(payload=payload, key=self._generate_jwt_key())
-        return token
-
-    def _generate_jwt_key(self):
-        key = ''.join(random.choices(population=string.ascii_letters + string.digits, k=self.KEY_LENGTH))
-        return key
