@@ -17,8 +17,6 @@ class QuestionResource(Resource):
         try:
             page = int(request.args.get('page', default=1))
             page_size = int(request.args.get('page_size', default=10))
-            sort_criteria = request.args.get('sort', default='newest')
-
             skip = (page - 1) * page_size
 
             questions = self.db.get_documents(collection_name=self.COLLECTION_NAME,
@@ -26,7 +24,7 @@ class QuestionResource(Resource):
                                               skip=skip,
                                               limit=page_size)
 
-            return make_response({"questions": questions}, 200)
+            return make_response({'data':{'questions': questions}}, 200)
         except Exception as e:
             error_message = str(e)
             return {'error': error_message}, 500

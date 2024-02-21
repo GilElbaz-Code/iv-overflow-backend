@@ -1,6 +1,6 @@
 import uuid
 
-from flask import request, jsonify, make_response
+from flask import request
 from flask_restful import Resource
 from db import IVOverflowDB
 from models.answer_model import AnswerModel
@@ -19,7 +19,7 @@ class AnswerResource(Resource):
                                             field_name='question_id',
                                             field_value=question_id,
                                             projection={'_id': 0})
-            return {'answers': answers}, 200
+            return {'data': {'answers': answers}}, 200
         except Exception as e:
             error_message = str(e)
             return {'error': error_message}, 500
@@ -38,15 +38,6 @@ class AnswerResource(Resource):
 
             result = self.db.create_document(collection_name=self.COLLECTION_NAME, document_data=answer.dict())
 
-            return {'result': result}, 201
-        except Exception as e:
-            error_message = str(e)
-            return {'error': error_message}, 500
-
-    def put(self):
-        try:
-            data = request.json
-            # TODO: Implement rating update logic
             return {'result': result}, 201
         except Exception as e:
             error_message = str(e)

@@ -28,17 +28,16 @@ class AuthResource(Resource):
                                             field_name="email",
                                             field_value=email)
                 if user and self._verify_password(plain_password=password, hashed_password=user['password']):
-                    # todo: this needs to be actual id not mongo id
-                    token = self._generate_jwt_token(user_id=str(user['_id']))
-                    return {"token": token}, 200
+                    token = self._generate_jwt_token(user_id=user.get('user_id'))
+                    return {'data': {'token': token}}, 201
                 else:
-                    return {'error': 'Invalid email or password'}, 401
+                    return {'data': {'error': 'Invalid email or password'}}, 401
             else:
-                return {'error': 'Email and password are required'}, 400
+                return {'data': {'error': 'Email and password are required'}}, 400
 
         except Exception as e:
             error_message = str(e)
-            return {'error': error_message}, 500
+            return {'data': {'error': error_message}}, 500
 
     @staticmethod
     def _verify_password(plain_password: str, hashed_password: str) -> bool:
