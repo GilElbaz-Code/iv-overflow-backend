@@ -37,7 +37,7 @@ class QuestionResource(Resource):
             title = data.get('title')
             content = data.get('content')
             categories = data.get('categories')
-            created_by = data.get('created_by')
+            created_by = data.get('userId') # todo: find a way to get full name from user id
 
             question = QuestionModel(question_id=str(uuid.uuid4()),
                                      title=title,

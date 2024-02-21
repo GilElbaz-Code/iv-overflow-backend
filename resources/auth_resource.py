@@ -26,8 +26,8 @@ class AuthResource(Resource):
                                             field_value=email)
                 if user and self._verify_password(plain_password=password, hashed_password=user['password']):
                     expires_delta = timedelta(hours=1)
-                    user_id = user.get('user_id')
-                    token = create_access_token(identity=user_id, expires_delta=expires_delta)
+                    identity = user.get('user_id')
+                    token = create_access_token(identity=identity, expires_delta=expires_delta)
                     return {'data': {'token': token}}, 201
                 else:
                     return {'data': {'error': 'Invalid email or password'}}, 401
