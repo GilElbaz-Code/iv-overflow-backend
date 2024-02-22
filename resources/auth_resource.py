@@ -25,8 +25,8 @@ class AuthResource(Resource):
                                             field_name="email",
                                             field_value=email)
                 if user and self._verify_password(plain_password=password, hashed_password=user['password']):
-                    expires_delta = timedelta(hours=1)
                     identity = user.get('user_id')
+                    expires_delta = timedelta(hours=1)
                     token = create_access_token(identity=identity, expires_delta=expires_delta)
                     return {'data': {'token': token}}, 201
                 else:

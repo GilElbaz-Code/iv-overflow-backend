@@ -7,5 +7,5 @@ class AnswerModel(BaseModel):
     question_id: str
     created_by: str
     content: str
-    rating: int = 0
+    votes: int = 0
     date: datetime = datetime.now()

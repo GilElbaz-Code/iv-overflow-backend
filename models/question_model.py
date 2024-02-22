@@ -8,5 +8,5 @@ class QuestionModel(BaseModel):
     title: str
     content: str
     date: datetime = datetime.now()
-    categories: List[str]
+    tags: List[str]
     created_by: str

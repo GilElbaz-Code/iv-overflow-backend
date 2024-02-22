@@ -25,7 +25,7 @@ class IVOverflowDB:
             field_value: Union[int, str, dict] = None
     ) -> Optional[Dict[str, Union[int, str, dict]]]:
         collection = self.db[collection_name]
-        document = collection.find_one({field_name: field_value})
+        document = collection.find_one({field_name: field_value}, projection={'_id': 0})
         return document
 
     def get_documents(
@@ -33,7 +33,6 @@ class IVOverflowDB:
             collection_name: str,
             field_name: str = None,
             field_value: Union[int, str, dict] = None,
-            projection: Optional[Dict[str, Union[int, str]]] = None,
             sort: Optional[List[Tuple[str, int]]] = None,
             skip: int = 0,
             limit: int = 0
@@ -41,7 +40,7 @@ class IVOverflowDB:
         collection = self.db[collection_name]
 
         query = {field_name: field_value} if field_name and field_value else {}
-        cursor = collection.find(query, projection=projection)
+        cursor = collection.find(query, projection={'_id': 0})
 
         if sort:
             cursor = cursor.sort(sort)

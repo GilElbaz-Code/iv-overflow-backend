@@ -8,6 +8,7 @@ from config import Config
 from resources.answer_resource import AnswerResource
 from resources.auth_resource import AuthResource
 from resources.question_resource import QuestionResource
+from resources.user_info_resource import UserInfoResource
 
 app = Flask(__name__)
 
@@ -17,8 +18,10 @@ jwt = JWTManager(app)
 app.config.from_object(Config)
 
 api.add_resource(AuthResource, '/login')
+api.add_resource(UserInfoResource, '/user-info')
 api.add_resource(QuestionResource, '/questions')
 api.add_resource(AnswerResource, '/answers')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

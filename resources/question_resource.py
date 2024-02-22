@@ -13,22 +13,32 @@ class QuestionResource(Resource):
 
     def __init__(self):
         self.db = IVOverflowDB.get_db()
+
     @jwt_required()
     def get(self):
         try:
-            page = int(request.args.get('page', default=1))
-            page_size = int(request.args.get('page_size', default=10))
-            skip = (page - 1) * page_size
+            data = request.args
+            question_id = data.get('question_id')
+            if question_id:
+                question = self.db.get_document(collection_name=self.COLLECTION_NAME,
+                                                field_name='question_id',
+                                                field_value=question_id)
+                return make_response({'question': question})
+            else:
+                # Retrieve a list of questions
+                page = int(request.args.get('page', default=1))
+                page_size = int(request.args.get('page_size', default=10))
+                skip = (page - 1) * page_size
 
-            questions = self.db.get_documents(collection_name=self.COLLECTION_NAME,
-                                              projection={"_id": 0},
-                                              skip=skip,
-                                              limit=page_size)
-
-            return make_response({'data':{'questions': questions}}, 200)
+                questions = self.db.get_documents(
+                    collection_name=self.COLLECTION_NAME,
+                    skip=skip,
+                    limit=page_size
+                )
+                return make_response({'questions': questions})
         except Exception as e:
             error_message = str(e)
-            return {'error': error_message}, 500
+            return {'data': {'error': error_message}}, 500
 
     @jwt_required()
     def post(self):
@@ -37,7 +47,7 @@ class QuestionResource(Resource):
             title = data.get('title')
             content = data.get('content')
             categories = data.get('categories')
-            created_by = data.get('userId') # todo: find a way to get full name from user id
+            created_by = data.get('full_name')
 
             question = QuestionModel(question_id=str(uuid.uuid4()),
                                      title=title,
