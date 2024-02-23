@@ -17,8 +17,8 @@ class UserInfoResource(Resource):
                                     field_name='user_id',
                                     field_value=user_id)
         user_info = {
-            'user_id': user_id,
+            'userId': user_id,
             'email': user.get('email'),
-            'full_name': user.get('full_name'),
+            'fullName': user.get('full_name'),
         }
         return {'data': user_info}

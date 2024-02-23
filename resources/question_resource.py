@@ -44,6 +44,7 @@ class QuestionResource(Resource):
     def post(self):
         try:
             data = request.json
+            print(data)
             title = data.get('title')
             content = data.get('content')
             tags = data.get('tags')
