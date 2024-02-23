@@ -46,14 +46,14 @@ class QuestionResource(Resource):
             data = request.json
             title = data.get('title')
             content = data.get('content')
-            categories = data.get('categories')
-            created_by = data.get('full_name')
+            tags = data.get('tags')
+            full_name = data.get('fullName')
 
             question = QuestionModel(question_id=str(uuid.uuid4()),
                                      title=title,
                                      content=content,
-                                     categories=categories,
-                                     created_by=created_by)
+                                     tags=tags,
+                                     full_name=full_name)
 
             result = self.db.create_document(collection_name=self.COLLECTION_NAME, document_data=question.dict())
 

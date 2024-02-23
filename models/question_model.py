@@ -9,4 +9,4 @@ class QuestionModel(BaseModel):
     content: str
     date: datetime = datetime.now()
     tags: List[str]
-    created_by: str
+    full_name: str
