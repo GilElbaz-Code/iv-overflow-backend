@@ -17,15 +17,13 @@ class QuestionResource(Resource):
     @jwt_required()
     def get(self):
         try:
-            data = request.args
-            question_id = data.get('question_id')
+            question_id = request.args.get('questionId')
             if question_id:
                 question = self.db.get_document(collection_name=self.COLLECTION_NAME,
                                                 field_name='question_id',
                                                 field_value=question_id)
                 return make_response({'question': question})
             else:
-                # Retrieve a list of questions
                 page = int(request.args.get('page', default=1))
                 page_size = int(request.args.get('page_size', default=10))
                 skip = (page - 1) * page_size
@@ -33,8 +31,7 @@ class QuestionResource(Resource):
                 questions = self.db.get_documents(
                     collection_name=self.COLLECTION_NAME,
                     skip=skip,
-                    limit=page_size
-                )
+                    limit=page_size)
                 return make_response({'questions': questions})
         except Exception as e:
             error_message = str(e)
@@ -44,7 +41,6 @@ class QuestionResource(Resource):
     def post(self):
         try:
             data = request.json
-            print(data)
             title = data.get('title')
             content = data.get('content')
             tags = data.get('tags')

@@ -1,6 +1,6 @@
 import uuid
 
-from flask import request
+from flask import request, make_response
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from db import IVOverflowDB
@@ -16,12 +16,11 @@ class AnswerResource(Resource):
     @jwt_required()
     def get(self):
         try:
-            question_id = request.args.get('question_id')
+            question_id = request.args.get('questionId')
             answers = self.db.get_documents(collection_name=self.COLLECTION_NAME,
                                             field_name='question_id',
-                                            field_value=question_id,
-                                            projection={'_id': 0})
-            return {'data': {'answers': answers}}, 200
+                                            field_value=question_id)
+            return make_response({'answers': answers})
         except Exception as e:
             error_message = str(e)
             return {'error': error_message}, 500
