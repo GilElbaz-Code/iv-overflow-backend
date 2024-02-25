@@ -38,3 +38,20 @@ Before running the backend, make sure you have the following prerequisites insta
 
 ```bash
 git clone https://github.com/GilElbaz-Code/ivoverflow-backend.git
+
+Install dependencies:
+
+cd ivoverflow-backend
+pip install -r requirements.txt
+
+Set up the database:
+
+Ensure MongoDB is running on your machine.
+Configure MongoDB connection in config.py.
+
+Run the application:
+python app.py
+The backend server should now be running at http://localhost:5000.
+
+
+
