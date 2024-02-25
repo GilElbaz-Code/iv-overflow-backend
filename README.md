@@ -46,6 +46,8 @@ Set up the database:
 
 Ensure MongoDB is running on your machine.
 Configure MongoDB connection in config.py.
+Only create a database called IVOverflow and a users collection (with MongoDB compass for example) - question and answers will be created automatically
+MONGO_URI = 'mongodb://localhost:27017' is the project MongoDB URI.
 
 Run the application:
 python app.py
