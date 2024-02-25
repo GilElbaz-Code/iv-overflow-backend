@@ -10,7 +10,7 @@ class AnswerModel(BaseModel):
     votes: int = 0
     date: datetime = datetime.now()
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "answer_id": self.answer_id,
             "question_id": self.question_id,

@@ -1,0 +1,6 @@
+Flask==3.0.2
+Flask_Cors==4.0.0
+Flask_JWT_Extended==4.6.0
+Flask_RESTful==0.3.10
+pydantic==2.6.2
+pymongo==4.6.2

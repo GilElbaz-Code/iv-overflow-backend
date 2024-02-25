@@ -16,7 +16,3 @@ class Config:
 
     # Other Configurations (if needed)
     KEY_LENGTH = int(os.getenv(key="KEY_LENGTH", default=32))
-
-    @staticmethod
-    def init_app(app):
-        pass
