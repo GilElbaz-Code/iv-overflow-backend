@@ -29,18 +29,25 @@ class AnswerResource(Resource):
     def post(self):
         try:
             data = request.json
-            question_id = data.get('question_id')
-            created_by = data.get('created_by')  # user_id
+            question_id = data.get('questionId')
+            full_name = data.get('fullName')
             content = data.get('content')
-
             answer = AnswerModel(answer_id=str(uuid.uuid4()),
                                  question_id=question_id,
-                                 created_by=created_by,
+                                 full_name=full_name,
                                  content=content)
 
             result = self.db.create_document(collection_name=self.COLLECTION_NAME, document_data=answer.dict())
 
-            return {'result': result}, 201
+            response_data = {
+                'result': result,
+                'status': 'success',
+                'message': 'Answer submitted successfully',
+                'answer': answer.to_dict()
+            }
+
+            return response_data, 201
         except Exception as e:
+            print(e)
             error_message = str(e)
             return {'error': error_message}, 500

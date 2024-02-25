@@ -19,6 +19,7 @@ class QuestionResource(Resource):
         try:
             question_id = request.args.get('questionId')
             if question_id:
+                print(question_id)
                 question = self.db.get_document(collection_name=self.COLLECTION_NAME,
                                                 field_name='question_id',
                                                 field_value=question_id)

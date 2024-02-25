@@ -54,13 +54,18 @@ class IVOverflowDB:
         documents = list(cursor)
         return documents
 
-    def update_document(self, collection_name: str, document_id: str,
-                        update_data: Dict[str, Union[int, str, dict]]) -> int:
+    def update_document(self, collection_name: str, field_name: str, field_value: str, update_data: dict) -> int:
         collection = self.db[collection_name]
-        result = collection.update_one({'_id': ObjectId(document_id)}, {'$set': update_data})
+        filter_query = {field_name: field_value}
+        result = collection.update_one(filter_query, {'$set': update_data})
         return result.modified_count
 
     def delete_document(self, collection_name: str, document_id: str) -> int:
         collection = self.db[collection_name]
         result = collection.delete_one({'_id': ObjectId(document_id)})
         return result.deleted_count
+
+    def aggregate(self, collection_name: str, pipeline: list):
+        collection = self.db[collection_name]
+        result = collection.aggregate(pipeline)
+        return result
