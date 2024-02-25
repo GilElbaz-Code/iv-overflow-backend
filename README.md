@@ -37,4 +37,4 @@ Before running the backend, make sure you have the following prerequisites insta
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/ivoverflow-backend.git
+git clone https://github.com/GilElbaz-Code/ivoverflow-backend.git
